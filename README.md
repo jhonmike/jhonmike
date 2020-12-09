@@ -1,6 +1,6 @@
 ### Hey, I'm Jhon Mike! 👋
 
-[![Anurag's github stats](https://github-readme-stats.vercel.app/api?username=jhonmike)](https://github.com/jhonmike)
+[![Jhon github stats](https://github-readme-stats.vercel.app/api?username=jhonmike&theme=dracula)](https://github.com/jhonmike)
 
 - 🔭 I’m currently working on @olxbr
 - 🌱 I’m currently learning @kubernetes
