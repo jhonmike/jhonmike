@@ -4,6 +4,6 @@
 
 - 🔭 I’m currently working on @nubank
 - 🌱 I’m currently learning Clojure and Dart/Flutter
-- 👯 I’m looking to collaborate on https://github.com/dash-ops/dash-ops/
+- 👯 I’m looking to collaborate on https://github.com/reactjs/pt-br.react.dev
 - 💬 Ask me about GoLang, React, ReactNative, Kubernetes, Terraform, Vault, AWS...
 - 📫 How to reach me: https://twitter.com/JhonMikeSoares
