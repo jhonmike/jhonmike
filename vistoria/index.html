@@ -1,0 +1,435 @@
+<title>Checklist de Vistoria de Apartamento</title>
+<style>
+  :root {
+    --bg: #f5f7f9;
+    --surface: #ffffff;
+    --surface-2: #eef2f5;
+    --ink: #182029;
+    --ink-soft: #4a5563;
+    --ink-faint: #7b8794;
+    --line: #dde3e9;
+    --accent: #0e7490;
+    --accent-soft: #cff0f5;
+    --done: #16a34a;
+    --done-soft: #dcfce7;
+    --warn: #c2410c;
+    --warn-soft: #fdead9;
+    --warn-line: #f2c8a8;
+    --shadow: 0 1px 2px rgba(24,32,41,.06), 0 4px 16px rgba(24,32,41,.05);
+    --mono: ui-monospace, "SF Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10141a;
+      --surface: #191f27;
+      --surface-2: #1f2731;
+      --ink: #e9edf2;
+      --ink-soft: #a6b2be;
+      --ink-faint: #6d7a86;
+      --line: #2b343f;
+      --accent: #22b8cf;
+      --accent-soft: #123a41;
+      --done: #34d399;
+      --done-soft: #113527;
+      --warn: #fb923c;
+      --warn-soft: #3a2413;
+      --warn-line: #5a3a1f;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10141a; --surface: #191f27; --surface-2: #1f2731;
+    --ink: #e9edf2; --ink-soft: #a6b2be; --ink-faint: #6d7a86; --line: #2b343f;
+    --accent: #22b8cf; --accent-soft: #123a41; --done: #34d399; --done-soft: #113527;
+    --warn: #fb923c; --warn-soft: #3a2413; --warn-line: #5a3a1f;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.35);
+  }
+  :root[data-theme="light"] {
+    --bg: #f5f7f9; --surface: #ffffff; --surface-2: #eef2f5;
+    --ink: #182029; --ink-soft: #4a5563; --ink-faint: #7b8794; --line: #dde3e9;
+    --accent: #0e7490; --accent-soft: #cff0f5; --done: #16a34a; --done-soft: #dcfce7;
+    --warn: #c2410c; --warn-soft: #fdead9; --warn-line: #f2c8a8;
+    --shadow: 0 1px 2px rgba(24,32,41,.06), 0 4px 16px rgba(24,32,41,.05);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    padding-bottom: 3rem;
+  }
+  .wrap { max-width: 680px; margin: 0 auto; padding: 0 clamp(.75rem, 3vw, 1.25rem); }
+
+  /* ---- sticky header ---- */
+  header {
+    position: sticky; top: 0; z-index: 20;
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    backdrop-filter: saturate(1.4) blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .head-inner { max-width: 680px; margin: 0 auto; padding: .7rem clamp(.75rem, 3vw, 1.25rem) .55rem; }
+  .kicker {
+    font-family: var(--mono);
+    font-size: .68rem; letter-spacing: .13em; text-transform: uppercase;
+    color: var(--accent); margin: 0 0 .15rem;
+  }
+  .head-row { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; }
+  h1 { font-size: clamp(1.05rem, 4.5vw, 1.35rem); margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+  .count {
+    font-family: var(--mono); font-size: .82rem; font-variant-numeric: tabular-nums;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .count b { color: var(--done); }
+  .bar { height: 6px; border-radius: 99px; background: var(--surface-2); margin-top: .55rem; overflow: hidden; }
+  .bar > i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), var(--done)); border-radius: 99px; transition: width .35s ease; }
+
+  .controls { display: flex; gap: .4rem; margin-top: .55rem; flex-wrap: wrap; }
+  .btn {
+    font-family: var(--mono); font-size: .72rem; letter-spacing: .02em;
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink-soft);
+    padding: .4rem .7rem; border-radius: 8px; cursor: pointer; -webkit-tap-highlight-color: transparent;
+    display: inline-flex; align-items: center; gap: .35rem;
+  }
+  .btn:active { transform: scale(.97); }
+  .btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  :root[data-theme="dark"] .btn[aria-pressed="true"], @media (prefers-color-scheme: dark) { }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---- meta strip ---- */
+  .meta {
+    display: flex; flex-wrap: wrap; gap: .35rem .55rem; margin: 1rem 0 .25rem;
+    font-family: var(--mono); font-size: .72rem; color: var(--ink-soft);
+  }
+  .meta span { background: var(--surface); border: 1px solid var(--line); padding: .25rem .5rem; border-radius: 7px; }
+  .meta b { color: var(--ink); font-weight: 600; }
+
+  /* ---- callout ---- */
+  .callout {
+    background: var(--warn-soft); border: 1px solid var(--warn-line);
+    border-left: 4px solid var(--warn); border-radius: 10px;
+    padding: .8rem .9rem; margin: 1rem 0;
+  }
+  .callout.info { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 35%, transparent); border-left-color: var(--accent); }
+  .callout h3 { margin: 0 0 .35rem; font-size: .92rem; display: flex; align-items: center; gap: .4rem; }
+  .callout p { margin: .3rem 0; font-size: .86rem; color: var(--ink-soft); }
+  .callout ul { margin: .35rem 0 0; padding-left: 1.1rem; font-size: .85rem; color: var(--ink-soft); }
+  .callout li { margin: .2rem 0; }
+  .callout strong { color: var(--ink); }
+
+  /* ---- sections ---- */
+  section { margin-top: 1.4rem; }
+  .sec-head {
+    display: flex; align-items: center; gap: .55rem;
+    position: sticky; top: 92px; z-index: 5;
+    background: color-mix(in srgb, var(--bg) 90%, transparent);
+    padding: .35rem 0; margin-bottom: .1rem;
+  }
+  .sec-num {
+    font-family: var(--mono); font-size: .74rem; font-weight: 600;
+    color: var(--accent); background: var(--accent-soft);
+    width: 1.7rem; height: 1.7rem; border-radius: 7px;
+    display: grid; place-items: center; flex: none;
+  }
+  .sec-head h2 { font-size: .96rem; margin: 0; letter-spacing: -.01em; }
+  .sec-head .stag { margin-left: auto; font-family: var(--mono); font-size: .7rem; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+
+  .list { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+  .item {
+    display: flex; align-items: flex-start; gap: .7rem;
+    padding: .8rem .85rem; min-height: 46px; cursor: pointer;
+    border-top: 1px solid var(--line);
+    -webkit-tap-highlight-color: transparent; user-select: none;
+    transition: background .12s ease;
+  }
+  .item:first-child { border-top: 0; }
+  .item:active { background: var(--surface-2); }
+  .box {
+    flex: none; width: 22px; height: 22px; margin-top: 1px;
+    border: 2px solid var(--line); border-radius: 6px;
+    display: grid; place-items: center; transition: all .15s ease;
+    background: var(--surface);
+  }
+  .box svg { width: 13px; height: 13px; opacity: 0; transform: scale(.5); transition: all .15s ease; }
+  .item.done .box { background: var(--done); border-color: var(--done); }
+  .item.done .box svg { opacity: 1; transform: scale(1); }
+  .item.done .txt { color: var(--ink-faint); }
+  .item.done .txt b { text-decoration: line-through; text-decoration-color: var(--ink-faint); }
+  .txt { font-size: .9rem; }
+  .txt b { font-weight: 600; color: var(--ink); }
+  .txt .hint { display: block; font-size: .78rem; color: var(--ink-faint); margin-top: .12rem; }
+
+  .hidden { display: none !important; }
+
+  /* ---- notes ---- */
+  .notes-wrap { margin-top: 1.6rem; }
+  .notes-wrap label { font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+  textarea {
+    width: 100%; margin-top: .5rem; min-height: 130px; resize: vertical;
+    background: var(--surface); color: var(--ink); border: 1px solid var(--line);
+    border-radius: 12px; padding: .8rem; font-family: var(--sans); font-size: .9rem; line-height: 1.5;
+    box-shadow: var(--shadow);
+  }
+  textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+
+  footer { margin-top: 1.6rem; text-align: center; font-family: var(--mono); font-size: .7rem; color: var(--ink-faint); line-height: 1.6; }
+  footer .save { color: var(--done); }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<header>
+  <div class="head-inner">
+    <p class="kicker">Vistoria de entrega</p>
+    <div class="head-row">
+      <h1>Vistoria de apartamento</h1>
+      <div class="count"><b id="cDone">0</b>/<span id="cTotal">0</span></div>
+    </div>
+    <div class="bar"><i id="progFill"></i></div>
+    <div class="controls">
+      <button class="btn" id="filterBtn" aria-pressed="false">☐ Só pendentes</button>
+      <button class="btn" id="themeBtn">◐ Tema</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="meta">
+    <span>📷 <b>Fotos/vídeo</b></span>
+    <span>📐 <b>Planta</b></span>
+    <span>🔌 <b>Testador de tomada</b></span>
+    <span>💧 <b>Água p/ ralos</b></span>
+    <span>🖊 <b>Fita + caneta</b></span>
+  </div>
+
+  <div class="callout">
+    <h3>⚠️ A regra de ouro</h3>
+    <p><strong>Todo defeito tem que entrar no TERMO DE VISTORIA por escrito, com prazo de conserto, ANTES de assinar.</strong> O que não for anotado vira briga depois (só via assistência técnica).</p>
+    <ul>
+      <li>Foto/vídeo de cada defeito, com data.</li>
+      <li>Nunca assine <em>"recebido sem ressalvas"</em> se há defeitos → escreva <em>"com ressalvas, conforme lista/fotos anexas"</em>.</li>
+      <li>Sozinho? Grave vídeo narrando enquanto anda. Sem pressa.</li>
+      <li>Defeito pequeno não deixa recusar as chaves — mas ainda deve ser listado.</li>
+      <li>Medida (m²): venda é <b>ad corpus</b> → não adianta contestar metragem. Confira só se o layout bate com a planta.</li>
+    </ul>
+  </div>
+
+  <div id="app"></div>
+
+  <div class="callout" style="margin-top:1.4rem">
+    <h3>🚫 O que NÃO vem (não marque como defeito)</h3>
+    <ul>
+      <li>Box do banheiro, torneiras, bancadas/pia (banheiro, cozinha, sacada)</li>
+      <li>Tanque + torneira da área de serviço, chuveiro elétrico</li>
+      <li>Canopla/acabamento de registros, espelho, <b>assento da bacia</b>, acessórios do banheiro</li>
+      <li>Luminárias e lâmpadas, granito da churrasqueira</li>
+      <li>Antena/TV a cabo (só tubulação seca)</li>
+    </ul>
+    <p><strong>Vem:</strong> piso porcelanato (todos + sacada), paredes pintadas 2 demãos, azulejo até o forro (banheiro/cozinha), forro de gesso, rodapé, portas, janelas c/ persiana integrada, guarda-corpo de vidro, bacia c/ caixa acoplada, ponto de split (elétrico+dreno+frigorígena), medidores individuais.</p>
+  </div>
+
+  <div class="notes-wrap">
+    <label for="notes">📝 Notas livres da vistoria</label>
+    <textarea id="notes" placeholder="Anote aqui defeitos, cômodos, números de tomada, o que perguntar... (salvo automático)"></textarea>
+  </div>
+
+  <footer>
+    <span class="save" id="saveMsg">salvo no aparelho</span><br>
+    Base: contrato de compra e venda + memorial descritivo
+  </footer>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  var SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>';
+
+  var DATA = [
+    { n: "1", t: "Documentos & perguntas", items: [
+      ["Qual o PRAZO pra sanar os reparos da lista? (exigir por escrito no termo)"],
+      ["Data efetiva da entrega das chaves — condomínio instituído? síndico eleito? áreas comuns entregues?"],
+      ["A partir de quando correm condomínio e IPTU pra mim? (começam na disponibilização)"],
+      ["Receber o MANUAL DO PROPRIETÁRIO + termos de garantia dos equipamentos"],
+      ["Como acionar a assistência técnica?"],
+      ["Habite-se (Vig. Sanitária) e AVCB (Bombeiros SC) emitidos?"],
+      ["Transferência dos medidores de água e GLP pro meu nome"],
+      ["Chaves: quantas cópias, controle de portão, tags — conferir e contar"],
+    ]},
+    { n: "2", t: "Portas", items: [
+      ["Abrir/fechar TODAS — sem raspar, alinhadas", "batente, dobradiça, folga"],
+      ["Fechadura da entrada funciona + testar as chaves entregues"],
+      ["Fechos e maçanetas de todas as portas"],
+    ]},
+    { n: "3", t: "Janelas", items: [
+      ["Correm suave, travas funcionam"],
+      ["Vidros sem trinca/risco"],
+      ["Persiana integrada sobe/desce (dormitórios e suíte)"],
+      ["Vedação (folga que entra vento/chuva) + pingadeira de pedra"],
+    ]},
+    { n: "4", t: "Pisos (porcelanato)", items: [
+      ["Bater em várias peças — som oco = solta"],
+      ["Trincas, riscos, peças manchadas"],
+      ["Rejunte uniforme, nível do piso"],
+      ["Caimento: jogar água no banheiro/sacada/serviço → corre pro ralo"],
+      ["Rodapé fixo e alinhado"],
+    ]},
+    { n: "5", t: "Paredes & teto", items: [
+      ["Pintura uniforme, sem bolha/mancha/falha"],
+      ["Forro de gesso sem rachadura, quinas ok"],
+      ["Fissuras (regra deles: aceitável se não vê a 3m com 300 lúmens)"],
+      ["Azulejo banheiro/cozinha vai até o forro, sem oco/trinca"],
+    ]},
+    { n: "6", t: "Hidráulica", items: [
+      ["Abrir registros e testar TODOS os pontos de água fria — sem vazar"],
+      ["Descarga da bacia funciona e veda (levar papel/água p/ testar)"],
+      ["Ralos escoam, sifões ok"],
+      ["Olhar vazamento embaixo dos pontos"],
+      ["Infra do aquecedor de passagem a gás no banheiro presente"],
+    ]},
+    { n: "7", t: "Elétrica", items: [
+      ["Testar TODAS as tomadas (carregador/testador)"],
+      ["Interruptores acionam o ponto (sem luminária é normal)"],
+      ["Quadro de disjuntores identificado; ligar/desligar cada circuito; DR"],
+      ["Campainha e interfone"],
+      ["Contar tomadas/pontos vs projeto elétrico"],
+      ["Pontos de telefone/TV/internet (infraestrutura)"],
+    ]},
+    { n: "8", t: "Ar-cond. & gás", items: [
+      ["Ponto de split: elétrico + DRENO + rede frigorígena no estar, suíte e dormitórios"],
+      ["Medidor individual de GLP + ponto de gás na cozinha"],
+    ]},
+    { n: "9", t: "Sacada", items: [
+      ["Empurrar guarda-corpo — firme; vidro sem trinca"],
+      ["Piso, caimento e ralo"],
+    ]},
+    { n: "10", t: "Geral & infiltração", items: [
+      ["Manchas de umidade no teto, cantos, sob janelas, sacada"],
+      ["Bacia sanitária fixa, sem trinca, caixa acoplada veda (assento não vem)"],
+      ["Peitoris/soleiras de pedra ok"],
+      ["Limpeza geral / entulho"],
+    ]},
+    { n: "11", t: "Vaga & box", items: [
+      ["Localizar a vaga/box — confere numeração e se é a correta"],
+      ["Carro cabe / pilar não atrapalha a manobra"],
+      ["Hobby box (se houver) localizado"],
+    ]},
+  ];
+
+  var KEY = "vistoria_v1";
+  var state = load();
+  var filterPending = false;
+
+  function load() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+  }
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); flashSave(); } catch (e) {}
+  }
+  var saveTimer;
+  function flashSave() {
+    var el = document.getElementById("saveMsg");
+    el.textContent = "✓ salvo"; clearTimeout(saveTimer);
+    saveTimer = setTimeout(function () { el.textContent = "salvo no aparelho"; }, 1200);
+  }
+
+  var app = document.getElementById("app");
+  var total = 0;
+
+  DATA.forEach(function (sec, si) {
+    total += sec.items.length;
+    var section = document.createElement("section");
+    var head = document.createElement("div");
+    head.className = "sec-head";
+    head.innerHTML =
+      '<span class="sec-num">' + sec.n + '</span>' +
+      '<h2>' + sec.t + '</h2>' +
+      '<span class="stag" id="stag' + si + '"></span>';
+    section.appendChild(head);
+
+    var list = document.createElement("div");
+    list.className = "list";
+    sec.items.forEach(function (it, ii) {
+      var id = si + "-" + ii;
+      var row = document.createElement("div");
+      row.className = "item";
+      row.dataset.id = id;
+      row.setAttribute("role", "checkbox");
+      row.setAttribute("tabindex", "0");
+      var hint = it[1] ? '<span class="hint">' + it[1] + '</span>' : '';
+      row.innerHTML = '<span class="box">' + SVG + '</span><span class="txt"><b>' + it[0] + '</b>' + hint + '</span>';
+      if (state[id]) { row.classList.add("done"); row.setAttribute("aria-checked", "true"); }
+      else { row.setAttribute("aria-checked", "false"); }
+      row.addEventListener("click", function () { toggle(row, id, si); });
+      row.addEventListener("keydown", function (e) {
+        if (e.key === " " || e.key === "Enter") { e.preventDefault(); toggle(row, id, si); }
+      });
+      list.appendChild(row);
+    });
+    section.appendChild(list);
+    app.appendChild(section);
+  });
+
+  document.getElementById("cTotal").textContent = total;
+
+  function toggle(row, id, si) {
+    var on = !row.classList.contains("done");
+    row.classList.toggle("done", on);
+    row.setAttribute("aria-checked", on ? "true" : "false");
+    if (on) state[id] = 1; else delete state[id];
+    save();
+    updateCounts();
+    if (filterPending && on) row.classList.add("hidden");
+  }
+
+  function updateCounts() {
+    var done = Object.keys(state).length;
+    document.getElementById("cDone").textContent = done;
+    document.getElementById("progFill").style.width = (total ? (done / total * 100) : 0) + "%";
+    DATA.forEach(function (sec, si) {
+      var d = 0;
+      for (var ii = 0; ii < sec.items.length; ii++) if (state[si + "-" + ii]) d++;
+      document.getElementById("stag" + si).textContent = d + "/" + sec.items.length;
+    });
+  }
+  updateCounts();
+
+  // filter
+  var fbtn = document.getElementById("filterBtn");
+  fbtn.addEventListener("click", function () {
+    filterPending = !filterPending;
+    fbtn.setAttribute("aria-pressed", filterPending ? "true" : "false");
+    fbtn.textContent = (filterPending ? "☑" : "☐") + " Só pendentes";
+    document.querySelectorAll(".item").forEach(function (r) {
+      r.classList.toggle("hidden", filterPending && r.classList.contains("done"));
+    });
+    document.querySelectorAll("section").forEach(function (s) {
+      var vis = s.querySelectorAll(".item:not(.hidden)").length;
+      s.classList.toggle("hidden", filterPending && vis === 0);
+    });
+  });
+
+  // theme toggle
+  var tbtn = document.getElementById("themeBtn");
+  tbtn.addEventListener("click", function () {
+    var cur = document.documentElement.getAttribute("data-theme");
+    var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var next = cur ? (cur === "dark" ? "light" : "dark") : (prefersDark ? "light" : "dark");
+    document.documentElement.setAttribute("data-theme", next);
+  });
+
+  // notes
+  var ta = document.getElementById("notes");
+  try { ta.value = localStorage.getItem(KEY + "_notes") || ""; } catch (e) {}
+  var nTimer;
+  ta.addEventListener("input", function () {
+    clearTimeout(nTimer);
+    nTimer = setTimeout(function () {
+      try { localStorage.setItem(KEY + "_notes", ta.value); flashSave(); } catch (e) {}
+    }, 400);
+  });
+})();
+</script>
